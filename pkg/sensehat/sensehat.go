@@ -8,9 +8,9 @@ import (
 )
 
 type Measurement struct {
-	Temperature float32
-	Humidity    float32
-	Pressure    float32
+	Temperature float32 `json:"temperature"`
+	Humidity    float32 `json:"humidity"`
+	Pressure    float32 `json:"pressure"`
 }
 
 func GetMeasurements() Measurement {
