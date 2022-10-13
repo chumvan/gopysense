@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/chumvan/gopysense/pkg/sensehat"
 )
 
 func main() {
-	m, err := sensehat.GetAllMeasurements()
+	m, err := sensehat.GetAllEnv()
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
-	fmt.Printf("%+v", m.String())
+	fmt.Println(m.String())
 }

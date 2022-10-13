@@ -3,7 +3,6 @@ package sensehat
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os/exec"
 )
 
@@ -16,12 +15,12 @@ type Measurement struct {
 func (m Measurement) String() string {
 	marshaled, err := json.Marshal(m)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 	return string(marshaled)
 }
 
-func GetAllMeasurements() (m Measurement, err error) {
+func GetAllEnv() (m Measurement, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
 	if err != nil {
 		return
