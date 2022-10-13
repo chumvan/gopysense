@@ -22,7 +22,7 @@ func (m Measurement) String() string {
 	return string(marshaled)
 }
 
-func (m Measurement) Marshal() []byte {
+func (m Measurement) Byte() []byte {
 	marshaled, err := json.Marshal(m)
 	if err != nil {
 		panic(err)
