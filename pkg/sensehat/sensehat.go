@@ -6,6 +6,8 @@ import (
 	"os/exec"
 )
 
+// TODO Get(name string) []byte
+
 type Measurement struct {
 	Temperature float32 `json:"temperature"`
 	Humidity    float32 `json:"humidity"`
@@ -20,6 +22,15 @@ func (m Measurement) String() string {
 	return string(marshaled)
 }
 
+func (m Measurement) Marshal() []byte {
+	marshaled, err := json.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	return marshaled
+
+}
+
 func GetAllEnv() (m Measurement, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
 	if err != nil {
@@ -32,9 +43,9 @@ func GetAllEnv() (m Measurement, err error) {
 }
 
 // func GetMeasurementOf(name string) []byte {
-// 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
+// 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py", name).Output()
 // 	if err != nil {
-// 		log.Fatal(err)
+// 		panic(err)
 // 	}
 
 // 	fmt.Printf("From py script, received: %s\n", string(out))
@@ -42,7 +53,7 @@ func GetAllEnv() (m Measurement, err error) {
 // 	var m []byte
 // 	err = json.Unmarshal(out, &m)
 // 	if err != nil {
-// 		log.Fatal(err)
+// 		panic(err)
 // 	}
 
 // 	return m
