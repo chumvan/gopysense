@@ -16,11 +16,11 @@ type Measurement struct {
 
 func main() {
 	out := sensehat.GetAllMeasurements()
-	var result Measurement
+	fmt.Println(string(out))
+	var result []Measurement
 	err := json.Unmarshal(out, &result)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%+v", result)
-	fmt.Println(string(out))
+	fmt.Printf("%+v", result[0])
 }

@@ -15,13 +15,7 @@ func GetAllMeasurements() []byte {
 
 	fmt.Printf("From py script, received: %s\n", string(out))
 
-	var m []byte
-	err = json.Unmarshal(out, &m)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return m
+	return out
 }
 
 func GetMeasurementOf(name string) []byte {
