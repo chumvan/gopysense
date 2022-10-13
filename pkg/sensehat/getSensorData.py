@@ -16,7 +16,7 @@ def main():
         "humidity": str(humidity),
         "pressure": str(pressure)
     }
-    
+
     measureStr = json.dumps(measureObj)
 
     print(measureStr)
