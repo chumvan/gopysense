@@ -1,20 +1,20 @@
 package sensehat
 
 import (
-	"log"
-	"fmt"
-	"os/exec"
 	"encoding/json"
+	"fmt"
+	"log"
+	"os/exec"
 )
 
 type Measurement struct {
 	Temperature float32
-	Humidity float32
-	Pressure float32
+	Humidity    float32
+	Pressure    float32
 }
 
 func GetMeasurements() Measurement {
-	out, err := exec.Command("python3", "pkg/sensehat/getSensorData.py").Output()	
+	out, err := exec.Command("python3", "pkg/sensehat/getSensorData.py").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,6 +26,6 @@ func GetMeasurements() Measurement {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	return m
 }
