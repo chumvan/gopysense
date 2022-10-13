@@ -7,30 +7,44 @@ import (
 	"os/exec"
 )
 
-func GetAllMeasurements() []byte {
-	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("From py script, received: %s\n", string(out))
-
-	return out
+type Measurement struct {
+	Temperature float32 `json:"temperature"`
+	Humidity    float32 `json:"humidity"`
+	Pressure    float32 `json:"pressure"`
 }
 
-func GetMeasurementOf(name string) []byte {
+func (m Measurement) String() string {
+	marshaled, err := json.Marshal(m)
+	if err != nil {
+		log.Panic(err)
+	}
+	return string(marshaled)
+}
+
+func GetAllMeasurements() (m Measurement, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
-
 	fmt.Printf("From py script, received: %s\n", string(out))
-
-	var m []byte
 	err = json.Unmarshal(out, &m)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	return m
+	return
 }
+
+// func GetMeasurementOf(name string) []byte {
+// 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+
+// 	fmt.Printf("From py script, received: %s\n", string(out))
+
+// 	var m []byte
+// 	err = json.Unmarshal(out, &m)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+
+// 	return m
+// }

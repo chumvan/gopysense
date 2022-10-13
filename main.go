@@ -1,26 +1,16 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 
 	"github.com/chumvan/gopysense/pkg/sensehat"
 )
 
-type Measurement struct {
-	Temperature float32 `json:"temperature"`
-	Humidity    float32 `json:"humidity"`
-	Pressure    float32 `json:"pressure"`
-}
-
 func main() {
-	out := sensehat.GetAllMeasurements()
-	fmt.Println(string(out))
-	var result []Measurement
-	err := json.Unmarshal(out, &result)
+	m, err := sensehat.GetAllMeasurements()
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
-	fmt.Printf("%+v", result[0])
+	fmt.Printf("%+v", m.String())
 }
