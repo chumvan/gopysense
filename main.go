@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/chumvan/gopysense/pkg/sensehat"
 	"encoding/json"
 	"fmt"
+
+	"github.com/chumvan/gopysense/pkg/sensehat"
 )
 
 func main() {
-	m := sensehat.GetMeasurements()
+	m := sensehat.GetAllMeasurements()
 	result, _ := json.Marshal(m)
 	fmt.Println(string(result))
 }
