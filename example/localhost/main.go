@@ -59,7 +59,6 @@ func main() {
 			}
 		}
 	}()
-
 	time.Sleep(20000 * time.Millisecond)
 	ticker.Stop()
 	fmt.Println("Finished all sending")
