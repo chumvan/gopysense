@@ -1,6 +1,4 @@
 #!/usr/bin/python3
-import time
-import sys
 from sense_hat import SenseHat
 import json
 

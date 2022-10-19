@@ -14,6 +14,12 @@ type Measurement struct {
 	Pressure    float32 `json:"pressure"`
 }
 
+type Orientation struct {
+	Pitch float64 `json:"pitch"`
+	Roll  float64 `json:"roll"`
+	Yaw   float64 `json:"yaw"`
+}
+
 func (m Measurement) String() string {
 	marshaled, err := json.Marshal(m)
 	if err != nil {
@@ -31,8 +37,35 @@ func (m Measurement) Byte() []byte {
 
 }
 
+func (m Orientation) String() string {
+	marshaled, err := json.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	return string(marshaled)
+}
+
+func (m Orientation) Byte() []byte {
+	marshaled, err := json.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	return marshaled
+
+}
 func GetAllEnv() (m Measurement, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
+	if err != nil {
+		return
+	}
+	fmt.Printf("From py script, received: %s\n", string(out))
+	err = json.Unmarshal(out, &m)
+
+	return
+}
+
+func GetOrientation() (m Orientation, err error) {
+	out, err := exec.Command("python3", "pkg/sensehat/getOrientation.py").Output()
 	if err != nil {
 		return
 	}
