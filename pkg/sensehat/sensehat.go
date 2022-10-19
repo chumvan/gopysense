@@ -3,6 +3,7 @@ package sensehat
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"os/exec"
 )
 
@@ -53,6 +54,16 @@ func (m Orientation) Byte() []byte {
 	return marshaled
 
 }
+
+func (m Orientation) LowerRes() (lower Orientation) {
+	lower = m
+	lower.Pitch = float64(math.Round(m.Pitch))
+	lower.Roll = float64(math.Round(m.Roll))
+	lower.Yaw = float64(math.Round(m.Yaw))
+	return lower
+
+}
+
 func GetAllEnv() (m Measurement, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
 	if err != nil {
