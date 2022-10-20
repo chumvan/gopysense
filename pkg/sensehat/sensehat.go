@@ -1,6 +1,7 @@
 package sensehat
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -78,11 +79,37 @@ func GetAllEnv() (m Measurement, err error) {
 func GetOrientation() (m Orientation, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getOrientation.py").Output()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	fmt.Printf("From py script, received: %s\n", string(out))
 	err = json.Unmarshal(out, &m)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	return
+}
 
+func GetOrientationDebug() (m Orientation, err error) {
+	cmd := exec.Command("python3", "pkg/sensehat/getOrientation.py")
+
+	var stdOut bytes.Buffer
+	var stdErr bytes.Buffer
+	cmd.Stdout = &stdOut
+	cmd.Stderr = &stdErr
+
+	err = cmd.Run()
+	if err != nil {
+		panic(fmt.Sprint(err) + ":" + stdErr.String())
+	}
+	out := stdOut.Bytes()
+	fmt.Printf("From py script, received: %s\n", string(out))
+
+	err = json.Unmarshal(out, &m)
+	if err != nil {
+		panic(err)
+	}
 	return
 }
 

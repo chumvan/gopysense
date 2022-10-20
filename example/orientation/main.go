@@ -37,15 +37,15 @@ func main() {
 
 	done := make(chan bool)
 
-	tickerHighFreq := time.NewTicker(500 * time.Millisecond)
+	tickerHighFreq := time.NewTicker(1000 * time.Millisecond)
 	go func() {
 		for {
 			select {
 			case <-done:
 				client.Close()
 				return
-			case t := <-tickerHighFreq.C:
-				m, err := sensehat.GetOrientation()
+			case <-tickerHighFreq.C:
+				m, err := sensehat.GetOrientationDebug()
 				if err != nil {
 					panic(err)
 				}
@@ -56,7 +56,6 @@ func main() {
 					map[string]interface{}{"avg": value},
 					time.Now())
 				writeAPI.WritePoint(context.Background(), p)
-				fmt.Printf("Packet sent at: %s\n", t)
 				fmt.Printf("High frequency value: %f of type: %s\n", value, reflect.TypeOf(value))
 				fmt.Println("===============")
 			}
@@ -70,8 +69,8 @@ func main() {
 			case <-done:
 				client.Close()
 				return
-			case t := <-tickerLowFreq.C:
-				m, err := sensehat.GetOrientation()
+			case <-tickerLowFreq.C:
+				m, err := sensehat.GetOrientationDebug()
 				if err != nil {
 					panic(err)
 				}
@@ -85,7 +84,6 @@ func main() {
 				if err != nil {
 					panic(err)
 				}
-				fmt.Printf("Packet sent at: %s\n", t)
 				fmt.Printf("Low frequency value: %f of type: %s\n", value, reflect.TypeOf(value))
 				fmt.Println("===============")
 
@@ -93,9 +91,9 @@ func main() {
 		}
 	}()
 
-	time.Sleep(30000 * time.Millisecond)
+	time.Sleep(300000 * time.Millisecond)
 	tickerHighFreq.Stop()
 	tickerLowFreq.Stop()
-	fmt.Println("Finished all sending")
 	done <- true
+	fmt.Println("Finished all sending")
 }
