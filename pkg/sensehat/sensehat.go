@@ -65,6 +65,15 @@ func (m Orientation) LowerRes() (lower Orientation) {
 
 }
 
+func (m Measurement) LowerRes() (lower Measurement) {
+	lower = m
+	lower.Temperature = float32(math.Round(float64(m.Temperature)))
+	lower.Humidity = float32(math.Round(float64(m.Humidity)))
+	lower.Pressure = float32(math.Round(float64(m.Pressure)))
+	return lower
+
+}
+
 func GetAllEnv() (m Measurement, err error) {
 	out, err := exec.Command("python3", "pkg/sensehat/getAllEnvData.py").Output()
 	if err != nil {
